@@ -10,6 +10,8 @@ app_prereq() {
 }
 
 YC="\e[33m"
+RC="\e[31m"
+GC="\e[32m"
 NC="\e[0m"
 OUTPUT=/tmp/wmp.log
 rm -f $OUTPUT
