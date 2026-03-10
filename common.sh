@@ -8,3 +8,9 @@ app_prereq() {
   cd /app
   tar xzf /tmp/${service_name}.tar.gz
 }
+
+YC="\e[33m"
+NC="\e[0m"
+OUTPUT=/tmp/wmp.log
+rm -f $OUTPUT
+
