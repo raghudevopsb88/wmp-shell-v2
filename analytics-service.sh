@@ -14,17 +14,10 @@ cd /app
 pip3.12 install --no-cache-dir . &>>$OUTPUT
 status_check
 
-echo -e "${YC}Set Permissions${NC}"
-chown -R appuser:appuser /app &>>$OUTPUT
-chmod o-rwx /app -R &>>$OUTPUT
-status_check
+set_permissions
 
 echo -e "${YC}Copy Service File${NC}"
 cp ${service_name}.service /etc/systemd/system/${service_name}.service &>>$OUTPUT
 status_check
 
-echo -e "${YC}Start ${service_name} Service${NC}"
-systemctl daemon-reload &>>$OUTPUT
-systemctl enable ${service_name} &>>$OUTPUT
-systemctl start ${service_name} &>>$OUTPUT
-status_check
+start_service

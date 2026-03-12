@@ -18,13 +18,5 @@ cd /app
 CGO_ENABLED=0 go build -o ${service_name} ./cmd/server &>>$OUTPUT
 status_check
 
-echo -e "${YC}Set Permissions${NC}"
-chown -R appuser:appuser /app &>>$OUTPUT
-chmod o-rwx /app -R &>>$OUTPUT
-status_check
-
-echo -e "${YC}Start ${service_name} Service${NC}"
-systemctl daemon-reload &>>$OUTPUT
-systemctl enable ${service_name} &>>$OUTPUT
-systemctl start ${service_name} &>>$OUTPUT
-status_check
+set_permissions
+start_service
