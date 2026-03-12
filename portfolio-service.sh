@@ -1,22 +1,35 @@
 source common.sh
 service_name=portfolio-service
 
-dnf install -y java-21-openjdk-devel
-cp ${service_name}.service /etc/systemd/system/${service_name}.service
+echo -e "${YC}Install Java${NC}"
+dnf install -y java-21-openjdk-devel &>>$OUTPUT
+status_check
 
-
+echo -e "${YC}Download and Extract Application${NC}"
 app_prereq
+status_check
 
+echo -e "${YC}Build Application${NC}"
 cd /app
-chmod +x gradlew
-./gradlew bootJar --no-daemon -x test
+chmod +x gradlew &>>$OUTPUT
+./gradlew bootJar --no-daemon -x test &>>$OUTPUT
+status_check
 
-cp /app/build/libs/*.jar /app/${service_name}.jar
-chown -R appuser:appuser /app
-chmod o-rwx /app -R
+echo -e "${YC}Copy Jar File${NC}"
+cp /app/build/libs/*.jar /app/${service_name}.jar &>>$OUTPUT
+status_check
 
+echo -e "${YC}Set Permissions${NC}"
+chown -R appuser:appuser /app &>>$OUTPUT
+chmod o-rwx /app -R &>>$OUTPUT
+status_check
 
-systemctl daemon-reload
-systemctl enable ${service_name}
-systemctl start ${service_name}
+echo -e "${YC}Copy Service File${NC}"
+cp ${service_name}.service /etc/systemd/system/${service_name}.service &>>$OUTPUT
+status_check
 
+echo -e "${YC}Start ${service_name} Service${NC}"
+systemctl daemon-reload &>>$OUTPUT
+systemctl enable ${service_name} &>>$OUTPUT
+systemctl start ${service_name} &>>$OUTPUT
+status_check
